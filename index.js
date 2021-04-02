@@ -41,6 +41,21 @@ const mailMessage = (url) => {
       </p>`;
 };
 
+const tokenValidation = (req, res, next) => {
+	if(req.headers.authorization !==undefined){
+	JWT.verify(req.headers.authorization, process.env.JWT_SECRET_KEY, (error, decodeData) => {
+if (decodeData){
+	req.body.key = decodeData.secretKey;
+	next()
+}else{
+	res.send('invalid token')
+}
+	})
+	}else{
+		res.status(401).json({message: 'no token'});
+	}
+}
+
 app.get('/', (req, res) => {
 	res.send('Welcome to secret messing service app');
 });
@@ -103,7 +118,13 @@ app.delete('/delete-message', async (req, res) => {
 			const compare = await bcryptjs.compare(req.body.password, secret.password);
 			if (compare) {
 				await db.collection('secrets').deleteOne({ key: req.body.secretKey });
-				res.json({ message: 'Message has been deleted SuccessfullY' });
+				const token = await JWT.sign({
+					data: req.body.secretKey
+				},process.env.JWT_SECRET_KEY, {expireIn: '1h'});
+				console.log(token)
+				if(token){
+					res.json({ message: 'Message has been deleted SuccessfullY' });
+				}
 			} else {
 				res.json({ message: 'Incorrect Password' });
 			}
@@ -117,4 +138,14 @@ app.delete('/delete-message', async (req, res) => {
 	}
 });
 
+
+router.post('/validate-token', [tokenValidation], async (req, res) => {
+	try{
+		const key = req.body.key
+res.status(200).json({message: "token validation successfull", key})
+	}catch (error) {
+	console.log(error);
+	res.sendStatus(500);
+	}
+})
 app.listen(PORT, () => console.log(`server started on port : ${PORT}`));
