@@ -139,7 +139,7 @@ app.delete('/delete-message', async (req, res) => {
 });
 
 
-router.post('/validate-token', [tokenValidation], async (req, res) => {
+applicationCache.post('/validate-token', [tokenValidation], async (req, res) => {
 	try{
 		const key = req.body.key
 res.status(200).json({message: "token validation successfull", key})
