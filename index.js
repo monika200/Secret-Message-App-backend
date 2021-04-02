@@ -13,8 +13,8 @@ dotenv.config();
 
 const PORT = process.env.PORT || 3000;
 const mongoClient = mongodb.MongoClient;
-const DB_URL =
-	'mongodb://127.0.0.1:27017';
+const DB_URL = process.env.DB_URL 
+	
 const EMAIL = process.env.EMAIL;
 const PASSWORD = process.env.PASSWORD;
 
