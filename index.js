@@ -5,10 +5,6 @@ const nodemailer = require('nodemailer');
 const cors = require('cors');
 const dotenv = require('dotenv');
 
-app.use(cors());
-app.use(cors({
-    origin:"https://secret-message-frontend.netlify.app/"
-}))
 
 const app = express();
 app.use(express.json());
