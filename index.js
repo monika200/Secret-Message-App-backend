@@ -96,7 +96,7 @@ app.get('/message-by-id/:id', async (req, res) => {
 	try {
 		const client = await mongoClient.connect(DB_URL);
 		const db = client.db('secrets');
-		const result = await db.collection('secrets').findOne({_id: objectId(req.params.id)}).project({password: 0, _id: 0, key: 0}).toArray();
+		const result = await db.collection('secrets').findOne({ _id: mongodb.ObjectID(req.params.id) });
 		if (!result) {
 			res.json({ message: 'null' });
 		} else {
