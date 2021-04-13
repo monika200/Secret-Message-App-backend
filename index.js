@@ -120,7 +120,7 @@ app.delete('/delete-message', async (req, res) => {
 			const compare = await bcryptjs.compare(req.body.password, secret.password);
 			if (compare) {
 				await db.collection('secrets').findOneAndDelete({ key: req.body.secretKey });
-				const token = await JWT.sign({
+				const token = JWT.sign({
 					data: req.body.secretKey
 				},process.env.JWT_SECRET_KEY, {expireIn: '1h'});
 				console.log(token)
@@ -131,7 +131,7 @@ app.delete('/delete-message', async (req, res) => {
 				res.status(401).json({ message: 'Incorrect Password' });
 			}
 		} else {
-			res.status(404).json({ message: 'Secret keey not found' });
+			res.status(404).json({ message: 'Secret key not found' });
 		}
 		client.close();
 	} catch (error) {
