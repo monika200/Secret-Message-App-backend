@@ -1,10 +1,11 @@
 const express = require('express');
+const JWT = require("jsonwebtoken")
 const mongodb = require('mongodb');
 const bcryptjs = require('bcryptjs');
 const nodemailer = require('nodemailer');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const JWT = require("jsonwebtoken")
+
 
 const app = express();
 app.use(express.json());
