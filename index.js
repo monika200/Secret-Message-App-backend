@@ -43,9 +43,10 @@ const mailMessage = (url) => {
 };
 
 const tokenValidation = (req, res, next) => {
-	if(req.headers.authorization !==undefined){
+	if(req.headers.authorization !=undefined){
 	JWT.verify(req.headers.authorization, process.env.JWT_SECRET_KEY, (error, decodeData) => {
 if (decodeData){
+	console.log(decodeData)
 	req.body.key = decodeData.secretKey;
 	next()
 }else{
@@ -118,19 +119,19 @@ app.delete('/delete-message', async (req, res) => {
 		if (secret) {
 			const compare = await bcryptjs.compare(req.body.password, secret.password);
 			if (compare) {
-				await db.collection('secrets').deleteOne({ key: req.body.secretKey });
+				await db.collection('secrets').findOneAndDelete({ key: req.body.secretKey });
 				const token = await JWT.sign({
 					data: req.body.secretKey
 				},process.env.JWT_SECRET_KEY, {expireIn: '1h'});
 				console.log(token)
 				if(token){
-					res.json({ message: 'Message has been deleted SuccessfullY',token });
+					res.status(200).json({ message: 'Message has been deleted SuccessfullY',token });
 				}
 			} else {
-				res.json({ message: 'Incorrect Password' });
+				res.status(401).json({ message: 'Incorrect Password' });
 			}
 		} else {
-			res.json({ message: 'Can not Fetch' });
+			res.status(404).json({ message: 'Secret keey not found' });
 		}
 		client.close();
 	} catch (error) {
@@ -143,6 +144,7 @@ app.delete('/delete-message', async (req, res) => {
 app.post('/validate-token', [tokenValidation], async (req, res) => {
 	try{
 		const key = req.body.key
+		// console.log(key)
 res.status(200).json({message: "token validation successfull", key})
 	}catch (error) {
 	console.log(error);
