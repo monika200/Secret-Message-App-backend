@@ -4,7 +4,7 @@ const bcryptjs = require('bcryptjs');
 const nodemailer = require('nodemailer');
 const cors = require('cors');
 const dotenv = require('dotenv');
-
+const JWT = require("jsonwebtoken")
 
 const app = express();
 app.use(express.json());
@@ -30,7 +30,7 @@ const transporter = nodemailer.createTransport(({
 
 const mailData = {
 	from: EMAIL,
-	subject: 'S*CR*T M*SSAG*',
+	subject: 'SECRET MESSAGE FOR YOU',
 };
 
 const mailMessage = (url) => {
@@ -57,7 +57,7 @@ if (decodeData){
 }
 
 app.get('/', (req, res) => {
-	res.send('Welcome to secret messing service app');
+	res.send('Welcome to secret messaging service app');
 });
 
 app.post('/create-message', async (req, res) => {
