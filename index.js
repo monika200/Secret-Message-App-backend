@@ -124,7 +124,7 @@ app.delete('/delete-message', async (req, res) => {
 				},process.env.JWT_SECRET_KEY, {expireIn: '1h'});
 				console.log(token)
 				if(token){
-					res.json({ message: 'Message has been deleted SuccessfullY' });
+					res.json({ message: 'Message has been deleted SuccessfullY',token });
 				}
 			} else {
 				res.json({ message: 'Incorrect Password' });
