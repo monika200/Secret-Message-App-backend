@@ -36,7 +36,7 @@ const mailData = {
 
 const mailMessage = (url) => {
 	console.log(url);
-	return `<p>Hello, This is Monika, <br />
+	return `<p>Hello, <br />
       You have a SECRET MESSAGE waiting for only you to open. <br />
       <a href='${url}' target="_blank">click here to see SECRET message</a> <br/>   
       </p>`;
